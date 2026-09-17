@@ -55,6 +55,7 @@ public class Main {
             System.out.println("3 - Atualizar máquina");
             System.out.println("4 - Excluir máquina");
             System.out.println("5 - Ver MTTR da máquina");
+            System.out.println("6 - Ver MTBF da máquina");
             System.out.println("0 - Voltar");
             System.out.print("Escolha uma opção: ");
 
@@ -131,6 +132,17 @@ public class Main {
                             System.out.println("Essa máquina não tem ordens de serviço concluídas.");
                         } else {
                             System.out.printf("MTTR (tempo médio de reparo): %.2f horas%n", mttr);
+                        }
+                    break;
+
+                case 6:
+                    System.out.print("ID da maquina: ");
+                    int idMTBF = Integer.parseInt(leia.nextLine());
+                    Double mtbf = osDao.calcularMTBF(idMTBF);
+                        if (mtbf == null) {
+                        System.out.println("Essa máquina ainda não tem dados suficientes para calcular o MTBF.");
+                        } else {
+                        System.out.printf("MTBF (tempo médio entre falhas): %.2f horas%n", mtbf);
                         }
                     break;
 

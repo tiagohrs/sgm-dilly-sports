@@ -147,5 +147,37 @@ public class OrdemServicoDAO {
         return null;
     }
     
+    public Double calcularMTBF(int idMaquina) {
+        String sql = "SELECT AVG(diferenca_horas) AS mtbf_horas " +
+                     "FROM ( " +
+                     "    SELECT TIMESTAMPDIFF(HOUR, " +
+                     "        LAG(data_abertura) OVER (ORDER BY data_abertura), " +
+                     "        data_abertura " +
+                     "    ) AS diferenca_horas " +
+                     "    FROM ordem_servico " +
+                     "    WHERE id_maquina = ? " +
+                     ") AS diferencas " +
+                     "WHERE diferenca_horas IS NOT NULL";
+        
+        try (Connection con = ConexaoBD.conectar();
+            PreparedStatement stmt = con.prepareStatement(sql)) {
+
+            stmt.setInt(1, idMaquina);
+            ResultSet rs = stmt.executeQuery();
+            
+            if (rs.next()) {
+                double valor = rs.getDouble("mtbf_horas");
+                if (rs.wasNull()) {
+                    return null;
+                }
+                return valor;
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Erro ao calcular MTBF: " + e.getMessage());
+        }
+
+        return null;
+    }
 
 }
