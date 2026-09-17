@@ -96,4 +96,20 @@ public class MaquinaDAO {
         }
     }
 
+    public boolean existe(int id) {
+        String sql = "SELECT 1 FROM maquina WHERE id = ?";
+
+        try (Connection con = ConexaoBD.conectar();
+            PreparedStatement stmt = con.prepareStatement(sql)) {
+
+            stmt.setInt(1, id);
+            ResultSet rs = stmt.executeQuery();
+            return rs.next();
+
+        } catch (SQLException e) {
+            System.out.println("Erro ao verificar máquina: " + e.getMessage());
+            return false;
+        }
+    }
+
 }

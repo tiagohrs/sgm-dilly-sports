@@ -185,6 +185,12 @@ public class Main {
                     System.out.print("ID da máquina relacionada: ");
                     int idMaquina = Integer.parseInt(leia.nextLine());
 
+                    MaquinaDAO maquinaDao = new MaquinaDAO();
+                        if (!maquinaDao.existe(idMaquina)) {
+                        System.out.println("Máquina não encontrada! Verifique o ID e tente novamente.");
+                    break;
+                    }
+
                     System.out.print("Descrição: ");
                     String descricao = leia.nextLine();
 
